@@ -4,8 +4,68 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>PANDAV - 20 Menus</title>
+
+<!-- SPEED BOOST FOR DETAILS PAGE -->
+<link rel="preconnect" href="https://pnapagetesting.blogspot.com">
+<link rel="preload" as="document" href="https://pnapagetesting.blogspot.com/p/next.html">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* ==== NEW HUMAN + SPINNER LOADER ==== */
+#loaderScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffffd9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  display: none;
+}
+
+.loader-box {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  perspective: 1000px;
+}
+
+.loader-ring {
+  width: 100%;
+  height: 100%;
+  border: 6px solid rgba(0,0,0,0.1);
+  border-top-color: #0066ff;
+  border-radius: 50%;
+  position: absolute;
+  animation: ringSpin 1s linear infinite;
+}
+
+.loader-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes ringSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/*-- --*/
 :root{
   --accent1:#07a5ff; --accent2:#11e3b3; --muted:#e9f1ff; --card:#fff; --text:#222;
 }
@@ -67,6 +127,16 @@ body:not(:target) #home { display:block; }
 </style>
 </head>
 <body>
+<!-- ===== Page Loader ===== -->
+<div id="loaderScreen">
+  <div class="loader-box">
+    <div class="loader-ring"></div>
+    <div class="loader-img">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTQyAMu_Kqp1JKPTOmUdO6XhFTNizDAfPpgLcURGZNbbBLTb-cJCqg-pYdwWQ8pubv3MFd5DlBwkBTOEbVcAfdu3KH23ByuXrj-nfwKyHR_-R0qV8aTsknQm4854JqBsYtzsImnEDIukCg64m918zY1V7zZgQZLoWbmdUPExVWHqcZEceIQFTKpJLIf5w8/s1600/PANDAV2.jpg">
+    </div>
+  </div>
+</div>
+
 
 <!-- ================= HOME PAGE ================= -->
 <div id="home" class="page">
@@ -693,6 +763,49 @@ body:not(:target) #home { display:block; }
 
 <!-- ================= SCRIPTS ================= -->
 <script>
+// FULL PAGE LOAD Loader দেখানো
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("loaderScreen").style.display = "flex";
+});
+
+// সব লোড শেষ → Loader hide
+window.addEventListener("load", function () {
+  setTimeout(() => {
+    document.getElementById("loaderScreen").style.display = "none";
+  }, 400); 
+});
+
+// Back click e loader off
+window.addEventListener("pageshow", e => {
+  if (e.persisted) {
+    document.getElementById("loaderScreen").style.display = "none";
+  }
+});
+
+// Details page always reload + loader show
+function forceReload(el) {
+  document.getElementById("loaderScreen").style.display = "flex";
+  window.location.href = el.href + "?t=" + Date.now();
+  return false;
+}
+
+// Search filter
+function searchCards() {
+  let input = document.getElementById('searchInput').value.toLowerCase();
+  let cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    let name = card.querySelector('.card-title').textContent.toLowerCase();
+    card.style.display = name.includes(input) ? "" : "none";
+  });
+}
+
+
+
+
+
+
+
   // Elements
   const searchInput = document.getElementById('searchInput');
   const clearBtn = document.getElementById('clearBtn');
